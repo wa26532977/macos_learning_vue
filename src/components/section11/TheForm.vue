@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="form-control">
-      <rating-control />
+      <rating-control v-model="rating"/>
     </div>
     <div class="form-control">
       <input type="checkbox" id="confirm-terms" name="confirm-term" v-model="confirm">
@@ -62,6 +62,7 @@
 
 <script>
 import RatingControl from "@/components/section11/RatingControl";
+
 export default {
   name: "TheForm",
   components: {RatingControl},
@@ -73,7 +74,8 @@ export default {
       interest: [],
       how: null,
       confirm: false,
-      error_found: false
+      error_found: false,
+      rating: null
     }
   },
   methods: {
@@ -88,6 +90,10 @@ export default {
       console.log(this.interest, this.how)
       this.interest.forEach((x, i) => console.log(i, x))
       console.log(this.confirm)
+      console.log(this.rating)
+      this.rating = null
+      this.how = null
+      this.confirm = false
     },
     validateInput() {
       if (this.userName === '') {
@@ -108,6 +114,7 @@ form {
   padding: 2rem;
   background-color: #ffffff;
 }
+
 .form-control.invalid input {
   border-color: red;
 }
@@ -115,9 +122,11 @@ form {
 .form-control.invalid label {
   color: red;
 }
+
 .form-control.invalid p {
   color: red;
 }
+
 .form-control {
   margin: 0.5rem 0;
 }
