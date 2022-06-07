@@ -52,6 +52,7 @@ export default {
     }
   },
   emits: ['survey-submit'],
+  inject: ['loadExperience'],
   methods: {
     submitSurvey() {
       if (this.enteredName === '' || !this.chosenRating) {
@@ -78,6 +79,7 @@ export default {
       //     rating: this.chosenRating
       //   })
       // })
+      // this.$root.$refs.UserExperience.loadExperience()
 
       this.enteredName = '';
       this.chosenRating = null;
