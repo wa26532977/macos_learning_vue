@@ -45,10 +45,10 @@ const routes = [
             default: () => import('../components/section13/users/UserList.vue'),
             footer: () => import('../components/section13/users/UserFooter.vue')
         },
-        beforeEnter(to, from, next) {
-            console.log(to, from)
-            next()
-        }
+        // beforeEnter(to, from, next) {
+        //     console.log(to, from)
+        //     next()
+        // }
     },
     // {
     //     path: '/teams/:id',
@@ -77,7 +77,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log("Globe")
+    // console.log("Globe")
     if (to.meta.needsAuth) {
         console.log("this needs auth")
     }
@@ -93,10 +93,10 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
-router.afterEach((to, from) => {
-    console.log("after Each")
-    console.log(to, from)
-    // sending analytics data
-})
+// router.afterEach((to, from) => {
+//     console.log("after Each")
+//     console.log(to, from)
+//     // sending analytics data
+// })
 
 export default router

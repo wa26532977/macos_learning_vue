@@ -1,6 +1,6 @@
 <template>
   <button @click="confirmInput">Confirm</button>
-  <button @click="changeSaved">Save Changes</button>
+  <button @click="savedChange">Save Changes</button>
   <ul>
     <user-item v-for="user in users" :key="user.id" :name="user.fullName" :role="user.role"></user-item>
   </ul>
