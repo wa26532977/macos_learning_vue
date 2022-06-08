@@ -42,13 +42,11 @@ export default {
       axios.get("https://vue-https-876f4-default-rtdb.firebaseio.com/surveys.json").then(
           (response) => {
             this.isLoading = false
-            console.log(response)
             if (response.statusText === 'OK') {
               Object.keys(response.data).forEach((key) => {
               if (!this.results.some(e => e.id === key)){
                 this.results.push({id: key, name: response.data[key].name, rating: response.data[key].rating})
               }
-              console.log(this.results)
             })
             } else {
               throw new Error("Could not save data!")
@@ -70,6 +68,7 @@ export default {
 </script>
 
 <style scoped>
+
 ul {
   list-style: none;
   margin: 0;

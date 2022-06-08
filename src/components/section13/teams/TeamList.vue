@@ -1,8 +1,10 @@
 <template>
+  <router-view />
   <ul>
     <team-item
       v-for="team in teams"
       :key="team.id"
+      :id="team.id"
       :name="team.name"
       :member-count="team.members.length"
     ></team-item>

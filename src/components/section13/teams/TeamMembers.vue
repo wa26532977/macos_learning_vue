@@ -9,25 +9,65 @@
           :role="member.role"
       ></user-item>
     </ul>
+    <button @click="toPageTwo">Go to teams 2</button>
   </section>
 </template>
 
 <script>
 import UserItem from "@/components/section13/users/UserItem";
+
 export default {
   name: "TeamMembers",
   components: {
     UserItem
   },
+  inject: ['users', 'teams'],
+  props: ['id'],
   data() {
     return {
       teamName: 'Test',
-      members: [
-        { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
-        { id: 'u2', fullName: 'Max Schwarz', role: 'Engineer' },
-      ],
+      members: [],
     };
   },
+  methods: {
+    toPageTwo() {
+      this.$router.push('/teams/t2')
+    },
+    loadTeamMember(id) {
+      this.members = []
+      // console.log(this.$route.path, this.$route.params.id)
+      // const selectedTeam = this.teams.find(team => team.id === route.params.id)
+      const selectedTeam = this.teams.find(team => team.id === id)
+      if (!selectedTeam) return
+      this.teamName = selectedTeam.name
+      // console.log(selectedTeam)
+      selectedTeam.members.forEach(member => {
+        // console.log(member)
+        const user = this.users.find(user => user.id === member)
+        this.members.push(user)
+      })
+      // console.log(this.members)
+    }
+  },
+  created() {
+    // this.loadTeamMember(this.$route)
+    console.log(this.id)
+    this.loadTeamMember(this.id)
+    console.log(this.$route.query)
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to, from)
+    // this.loadTeamMember(to.params.id)
+    next()
+  },
+  watch: {
+    id(newId) {
+      this.loadTeamMember(newId)
+    }
+  },
+  // beforeRouteUpdate(to) {
+  //   this.loadTeamMember(to.params.id)
+  // }
 }
 </script>
 
