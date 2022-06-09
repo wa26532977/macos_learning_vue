@@ -1,9 +1,22 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ProductsList from "../components/section15Challenge/pages/ProductsList";
+// import ProductsList from "@/components/section15Challenge/pages/ProductsList";
+import UserCart from "../components/section15Challenge/pages/UserCart";
+import ShopAdmin from "../components/section15Challenge/pages/ShopAdmin";
 
 const routes = [
+    { path: '/products', component: ProductsList },
+    { path: '/cart', component: UserCart },
+    { path: '/admin', component: ShopAdmin },
     {
         path: '/',
+        name: '15Challenge',
+        // component: () => import('../views/Section15ChallengeApp')
+        redirect: "/products"
+    },
+    {
+        path: '/home',
         name: 'home',
         component: HomeView
     },
