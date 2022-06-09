@@ -21,11 +21,16 @@
 <!--      <button @click="showDialog">Show Dialog</button>-->
 <!--    </div>-->
 <!--  </div>-->
-  <base-container title="Vuex">
-    <h3>{{ counter }}</h3>
-    <button @click="addOne">Add 1</button>
+  <base-container>
+    <user-auth />
   </base-container>
-  <the-counter />
+  <base-container title="Vuex" v-if="showContain">
+    <h3>{{ counter }}</h3>
+    <button @click="addOne">Add 1+2</button>
+    <change-counter />
+    <favorite-value />
+    <the-counter />
+  </base-container>
 </template>
 
 <script>
@@ -37,16 +42,22 @@
 // import BaseModal from "@/components/section14/BaseModal";
 import BaseContainer from "@/components/section15/BaseContainer";
 import TheCounter from "@/components/section15/TheCounter";
+import ChangeCounter from "@/components/section15/ChangeCounter";
+import FavoriteValue from "@/components/section15/FavoriteValue";
+import UserAuth from "@/components/section15/UserAuth";
 
 export default {
   name: 'HomeView',
   components: {
+    UserAuth,
+    FavoriteValue,
     // TheForm,
     // LearningSurvey,
     // UserExperiences
     // BaseModal
     BaseContainer,
-    TheCounter
+    TheCounter,
+    ChangeCounter
   },
   data() {
     return {
@@ -57,7 +68,13 @@ export default {
   },
   methods: {
     addOne() {
-      this.$store.state.counter++
+      // this.$store.commit('counterModule/addOne')
+      // action
+      this.$store.dispatch({
+        type: 'counterModule/gettingUser',
+        value: 1,
+        value_2: 2
+      })
     },
     // showDialog() {
     //   this.dialogIsVisible = true;
@@ -74,7 +91,13 @@ export default {
   },
   computed: {
     counter() {
-      return this.$store.state.counter
+      return this.$store.getters['counterModule/getCounter']
+    },
+    showContain() {
+      return this.$store.state.userLogin
+    },
+    checkAuth() {
+      return this.$store.getters.userAuthentication
     }
   }
   // data() {
