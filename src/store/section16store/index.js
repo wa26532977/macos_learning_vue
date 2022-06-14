@@ -1,4 +1,5 @@
 import {createStore} from "vuex";
+import requestModule from "@/store/section16store/requestModule";
 
 export default createStore({
     state() {
@@ -22,7 +23,8 @@ export default createStore({
                         'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
                     hourlyRate: 30
                 }
-            ]
+            ],
+            userId: 'c3',
         }
     },
     getters: {
@@ -31,9 +33,38 @@ export default createStore({
         },
         getHasCoaches(state) {
             return state.coaches.length > 0
+        },
+        getUserId(state) {
+            return state.userId
+        },
+        // getIsCoach(state, getters, rootState, rootgetter) {
+        //     const coaches = getters.getCoaches
+        // }
+        getIsCoach(state, getters) {
+            const coaches = getters.getCoaches
+            const userId = getters.getUserId
+            return coaches.some(coach => coach.id === userId)
         }
     },
-    mutations: {},
-    actions: {},
-    modules: {}
+    mutations: {
+        registerCoach(state, payload) {
+            state.coaches.push(payload)
+        }
+    },
+    actions: {
+        registerCoach(context, data) {
+            const coachData = {
+                // id: new Date().toISOString(),
+                id: context.rootGetters.getUserId,
+                firstName: data.first,
+                lastName: data.last,
+                areas: data.areas,
+                description: data.desc,
+                hourlyRate: data.rate
+            }
+            context.commit('registerCoach', coachData)
+
+        }
+    },
+    modules: {request: requestModule}
 })
