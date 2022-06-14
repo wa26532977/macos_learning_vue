@@ -1,10 +1,14 @@
 <template>
+  <base-dialog :show="!!error" title="An error occurred" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     <base-card>
       <header>
         <h2>Requested Received</h2>
       </header>
-      <ul v-if="hasRequests">
+      <base-spinner v-if="isLoading"/>
+      <ul v-else-if="hasRequests">
         <RequestedItem v-for="request in requests" :key="request.id" :email="request.userEmail"
                        :coachId="request.coachId" :message="request.message"/>
       </ul>
@@ -16,10 +20,18 @@
 <script>
 import BaseCard from "@/components/section16/components/UI/BaseCard";
 import RequestedItem from "@/components/section16/components/requests/RequestedItem";
+import BaseSpinner from "@/components/section16/components/UI/BaseSpinner";
+import BaseDialog from "@/components/section16/components/UI/BaseDialog";
 
 export default {
   name: "RequestedReceived",
-  components: {BaseCard, RequestedItem},
+  components: {BaseDialog, BaseCard, RequestedItem, BaseSpinner},
+  data() {
+    return {
+      isLoading: false,
+      error: null
+    }
+  },
   computed: {
     requests() {
       return this.$store.getters['request/getRequests']
@@ -27,6 +39,23 @@ export default {
     hasRequests() {
       return this.$store.getters['request/getHasRequests']
     }
+  },
+  methods: {
+    async loadRequests() {
+      this.isLoading = true
+      try {
+        await this.$store.dispatch("request/fetchRequests")
+      } catch (error) {
+        this.error = error.message || "Something went wrong when try to load requests"
+      }
+      this.isLoading = false
+    },
+    handleError() {
+      this.error = null
+    }
+  },
+  mounted() {
+    this.loadRequests()
   }
 }
 </script>
