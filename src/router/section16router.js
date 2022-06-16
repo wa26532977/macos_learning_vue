@@ -9,25 +9,25 @@ const routes = [
         path: '/coaches/:id',
         name: 'coach',
         props: true,
-        component: defineAsyncComponent(() => import('../components/section16/pages/coaches/CoachDetail')),
+        component: () => import('../components/section16/pages/coaches/CoachDetail'),
         children: [{path: 'contact', component: () => import('../components/section16/pages/requests/ContactCoach')}]
     },
     {
         path: '/register',
         name: 'register',
-        component: defineAsyncComponent(() => import('../components/section16/pages/coaches/CoachRegistration')),
+        component: () => import('../components/section16/pages/coaches/CoachRegistration'),
         meta: {requiresAuth: true, notRegistered: true}
     },
     {
         path: '/requests',
         name: 'requests',
-        component: defineAsyncComponent(() => import('../components/section16/pages/requests/RequestedReceived')),
+        component: () => import('../components/section16/pages/requests/RequestedReceived'),
         meta: {requiresAuth: true}
     },
     {
         path: '/auth',
         name: 'auth',
-        component: defineAsyncComponent(() => import ('../components/section16/pages/auth/UserAuth')),
+        component: () => import ('../components/section16/pages/auth/UserAuth'),
         meta: {requiresUnAuth: true}
     },
     {path: '/:notFound(.*)', name: 'notFound', component: () => import('../components/section16/pages/NotFound')},
