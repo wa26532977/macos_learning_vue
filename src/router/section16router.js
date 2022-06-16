@@ -8,7 +8,9 @@ const routes = [
     },
     { path: '/register', name: 'register',component: () => import('../components/section16/pages/coaches/CoachRegistration')},
     { path: '/requests', name: 'requests',component: () => import('../components/section16/pages/requests/RequestedReceived')},
+    { path: '/auth', name: 'auth', component: () => import ('../components/section16/pages/auth/UserAuth')},
     { path: '/:notFound(.*)', name: 'notFound', component: () => import('../components/section16/pages/NotFound')},
+
 
 ]
 

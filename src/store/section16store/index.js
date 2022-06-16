@@ -1,12 +1,15 @@
 import {createStore} from "vuex";
 import requestModule from "@/store/section16store/requestModule";
+import {fireBaseApiKey} from "@/keys/keys";
 
 export default createStore({
     state() {
         return {
             lastFetch: null,
             coaches: [],
-            userId: 'c3',
+            userId: null,
+            token: null,
+            tokenExpiration: null
         }
     },
     getters: {
@@ -32,7 +35,7 @@ export default createStore({
                 return true
             }
             // check if the time is longer then 60 seconds
-            return (new Date().getTime() - state.lastFetch)/1000 > 60
+            return (new Date().getTime() - state.lastFetch) / 1000 > 60
         }
     },
     mutations: {
@@ -44,9 +47,47 @@ export default createStore({
         },
         setFetchTimestamp(state) {
             state.lastFetch = new Date().getTime()
+        },
+        setUser(state, payload) {
+            state.token = payload.token
+            state.userId = payload.userId
+            state.tokenExpiration = payload.tokenExpiration
         }
     },
     actions: {
+        // login(context) {
+        //
+        // },
+        async signup(context, payload) {
+            const response = await fetch(
+                `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${fireBaseApiKey}`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        email: payload.email,
+                        password: payload.password,
+                        returnSecureToken: true
+                    })
+                }
+            )
+            // console.log(payload.email, payload.password)
+            const responseData = await response.json()
+            console.log(responseData)
+            // console.log(responseData.error.message)
+            // if (responseData.error.message === "EMAIL_EXISTS") {
+            //     throw new Error(responseData.error.message)
+            // }
+            if (!response.ok) {
+                throw new Error(responseData.error.message || "Something went wrong when try to signup")
+            }
+            // console.log(responseData)
+            context.commit('setUser', {
+                token: responseData.idToken,
+                userId: responseData.localId,
+                tokenExpiration: responseData.expiresIn
+            })
+
+        },
         async registerCoach(context, data) {
             const userId = context.rootGetters.getUserId
             const coachData = {
