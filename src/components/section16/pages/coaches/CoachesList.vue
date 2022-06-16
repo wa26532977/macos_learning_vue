@@ -9,7 +9,8 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline" @click="refreshCoaches(true)">Refresh</base-button>
-        <base-button link to="/register" v-if="!isCoach && !isLoading">Register as coach</base-button>
+        <base-button link to="/auth?redirect=register" v-if="!isLogin">Login to Register as coach</base-button>
+        <base-button link to="/register" v-else-if="!isCoach && !isLoading">Register as coach</base-button>
       </div>
       <div v-if="isLoading">
         <base-spinner />
@@ -64,7 +65,9 @@ export default {
         }
         return this.activeFilter.career && coach.areas.includes('career');
       })
-
+    },
+    isLogin() {
+      return this.$store.getters.getIsLogin
     },
     hasCoaches() {
       return this.$store.getters.getHasCoaches

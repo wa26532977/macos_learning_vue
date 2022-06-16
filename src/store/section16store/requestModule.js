@@ -43,7 +43,7 @@ export default {
             context.commit('addRequest', newRequest)
         },
         async fetchRequests(context) {
-            const response = await fetch(`https://coachapp-ab765-default-rtdb.firebaseio.com/requests/${context.rootGetters.getUserId}.json`)
+            const response = await fetch(`https://coachapp-ab765-default-rtdb.firebaseio.com/requests/${context.rootGetters.getUserId}.json?auth=${context.rootGetters.getToken}`)
             const responseData = await response.json()
             if (!response.ok) {
                 throw new Error(responseData.message || "Fail to load requests")

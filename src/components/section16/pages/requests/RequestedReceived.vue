@@ -46,7 +46,9 @@ export default {
       try {
         await this.$store.dispatch("request/fetchRequests")
       } catch (error) {
-        this.error = error.message || "Something went wrong when try to load requests"
+        if (error.message !== "Cannot convert undefined or null to object") {
+          this.error = error.message || "Something went wrong when try to load requests"
+        }
       }
       this.isLoading = false
     },

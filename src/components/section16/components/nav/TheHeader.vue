@@ -7,7 +7,11 @@
           <router-link :to="{name: 'coaches'}">All Coaches</router-link>
         </li>
         <li>
-          <router-link to="/requests">Request</router-link>
+          <router-link to="/requests" v-if="isLogin">Request</router-link>
+        </li>
+        <li>
+          <router-link to="/coaches" v-if="isLogin" @click="logout">Logout</router-link>
+          <router-link to="/auth" v-else>LogIn</router-link>
         </li>
       </ul>
     </nav>
@@ -16,7 +20,17 @@
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeader",
+  methods: {
+    logout() {
+      this.$store.dispatch('logOut')
+    }
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.getIsLogin
+    }
+  }
 }
 </script>
 

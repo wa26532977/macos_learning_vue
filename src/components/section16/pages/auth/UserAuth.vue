@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="an error occurred">
+    <base-dialog :show="!!error" title="an error occurred" @close="closeError">
       <p>{{ error }}</p>
     </base-dialog>
     <base-dialog fixed :show="isLoading" title="Authentication....">
@@ -53,19 +53,31 @@ export default {
       this.isLoading = true
       try {
         if (this.mode === 'signup') {
-          await this.$store.dispatch("signup", {
+          await this.$store.dispatch("auth", {
+            mode: 'signup',
+            email: this.email,
+            password: this.password
+          })
+        } else if (this.mode === 'login') {
+          await this.$store.dispatch('auth', {
+            mode: 'login',
             email: this.email,
             password: this.password
           })
         }
+        // const redirectUrl = this.$route.query.redirect
+        // if (redirectUrl) {
+        //   await this.$router.replace(`/${redirectUrl}`)
+        // } else {
+        //   await this.$router.replace('/coaches')
+        // }
+        await this.$router.replace(`/${(this.$route.query.redirect || 'coaches')}`)
       } catch (error) {
         console.log(error)
-        // this.error = error.message
+        this.error = error
         // console.log(error)
       }
-
       this.isLoading = false
-      // sent http request...
     },
     switchAuthMode() {
       if (this.mode === 'login') {
@@ -73,6 +85,9 @@ export default {
       } else {
         this.mode = 'login'
       }
+    },
+    closeError() {
+      this.error = null
     }
   },
   computed: {
