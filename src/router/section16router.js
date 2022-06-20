@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from "vue-router";
-import {defineAsyncComponent} from "vue";
 import store from '../store/section16store/index'
 
 const routes = [
